@@ -31,7 +31,9 @@ Brings everything needed to play a game together
 
 In this project we are proving the concept with a simplified implementation
 
+```
 Game:       Ro-sham-bo
 Components: Rock, Paper, Scissors
 Formats:    Standard(Rock, Paper, Siczors)
 Modes:      Leaderboard
+```
