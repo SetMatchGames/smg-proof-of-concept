@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/SetMatchGames/smg-proof-of-concept/issues"
   },
-  "homepage": "https://github.com/SetMatchGames/smg-proof-of-concept#readme"
+  "homepage": "https://github.com/SetMatchGames/smg-proof-of-concept#readme",
+  "dependencies": {
+    "readline-sync": "^1.4.9"
+  }
 }

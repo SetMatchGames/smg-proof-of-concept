@@ -1,25 +1,16 @@
 {
-  "Ro-sham-bo": [
-    {
-      "name": "Rock",
-      "rules": {
-        "winsAgainst": ["Scissors"],
-        "losesAgainst": ["Paper"]
-      }
+  "Ro-sham-bo": {
+    "Rock" : {
+      "winsAgainst": ["Scissors"],
+      "losesAgainst": ["Paper"]
     },
-    {
-      "name": "Paper",
-      "rules": {
-        "winsAgainst": ["Rock"],
-        "losesAgainst": ["Scissors"]
-      }
+    "Paper": {
+      "winsAgainst": ["Rock"],
+      "losesAgainst": ["Scissors"]
     },
-    {
-      "name": "Scissors",
-      "rules": {
-        "winsAgainst": ["Paper"],
-        "losesAgainst": ["Rock"]
-      }
+    "Scissors": {
+      "winsAgainst": ["Paper"],
+      "losesAgainst": ["Rock"]
     }
-  ]
+  }
 }
