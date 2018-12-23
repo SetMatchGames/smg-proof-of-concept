@@ -14,7 +14,7 @@ The cards or pices of a game that can change between each time a game is played
 
 * Cards in MTG or Hearthstone
 * Units in RTS
-* Heros and items in MOBAs
+* Heroes and items in MOBAs
 
 ### Formats
 
@@ -27,13 +27,13 @@ Rules for intrepreting game results
 # Client
 
 Execute gamerules, respecting formats and through the course of gameplay create results that can be understood by modes.
-Brings everything needed to play a game together
+Brings everything needed to play a game together.
 
-In this project we are proving the concept with a simplified implementation
+In this project, we are proving the concept with a simplified implementation.
 
 ```
 Game:       Ro-sham-bo
 Components: Rock, Paper, Scissors
-Formats:    Standard(Rock, Paper, Siczors)
+Formats:    Standard (Rock, Paper, Scissors)
 Modes:      Leaderboard
 ```
