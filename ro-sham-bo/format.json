@@ -1,0 +1,20 @@
+{
+  "Rock": {
+    "name": "Rock",
+    "rules": {
+      "winsAgainst": ["Scissors"]
+    }
+  },
+  "Paper": {
+    "name": "Paper",
+    "rules": {
+      "winsAgainst": ["Rock"]
+    }
+  },
+  "Scissors": {
+    "name": "Scissors",
+    "rules": {
+      "winsAgainst": ["Paper"]
+    }
+  }
+}
