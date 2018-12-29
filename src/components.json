@@ -11,6 +11,15 @@
     "Scissors": {
       "winsAgainst": ["Paper"],
       "losesAgainst": ["Rock"]
+    },
+
+    "Lizard": {
+      "winsAgainst": ["Spock", "Paper"],
+      "losesAgainst": ["Rock", "Scissors"]
+    },
+    "Spock": {
+      "winsAgainst": ["Rock", "Scissors"],
+      "losesAgainst": ["Paper", "Lizard"]
     }
   }
 }

@@ -17,7 +17,6 @@ const getRules = (answer) => {
     choice: answer,
     rules: components["Ro-sham-bo"][answer]
   }
-
 }
 
 const findWinner = (p1, p2) => {
