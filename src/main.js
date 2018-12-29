@@ -10,8 +10,12 @@ let format = q(`Choose a format [${Object.keys(formats["Ro-sham-bo"])}] `)
 if (format === "") {
   format = "standard"
 }
-// hardcode game
+// hardcode game and mode
 const game = "Ro-sham-bo"
+let mode = q("Choose a mode (default: leaderboard) ")
+if(mode === "") {
+  mode = "leaderboard"
+}
 
 const gameComponents = formats[game][format]
 
@@ -66,10 +70,40 @@ while (!winner) {
   winner = findWinner([p1Name, p1], [p2Name, p2])
 }
 
-// publish the game result
-console.log({
+var results = JSON.parse(fs.readFileSync('results.json', 'utf8'))
+results.push({
   "game": game,
   "format": format,
   "players": [p1Name, p2Name],
   "winner": winner
 })
+
+fs.writeFileSync("results.json", JSON.stringify(results))
+
+const leaderboardMode = (results) => {
+  let winners = {}
+  results.forEach((r) => {
+    if (winners[r.winner] === undefined) {
+      winners[r.winner] = 1
+    } else {
+      winners[r.winner] += 1
+    }
+  })
+  console.log(winners)
+}
+
+const jesseMillerOnlyMode = (results) => {
+  console.log(results)
+  results = results.filter(
+    r => r.players.includes("Jesse") && r.players.includes("Miller") && r.players.length === 2
+  )
+  console.log(results)
+  leaderboardMode(results)
+}
+
+const modes = {
+  "leaderboard": leaderboardMode,
+  "jesseMillerOnly": jesseMillerOnlyMode
+}
+
+modes[mode](results.filter(r => r.game === game && r.format === format))
