@@ -10,7 +10,6 @@ let format = q(`Choose a format [${Object.keys(formats["Ro-sham-bo"])}] `)
 if (format === "") {
   format = "standard"
 }
-
 // hardcode game
 const game = "Ro-sham-bo"
 
@@ -60,6 +59,7 @@ const p2Name = q("Enter player two's name: ")
 let p1, p2
 let winner = false
 while (!winner) {
+  console.log("No winner yet...")
   p1 = getRules(q(`Player one choose a component from [${gameComponents}]: `))
   p2 = getRules(q(`Player two choose a component from [${gameComponents}]: `))
 
@@ -73,4 +73,3 @@ console.log({
   "players": [p1Name, p2Name],
   "winner": winner
 })
-
