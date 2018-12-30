@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/SetMatchGames/smg-proof-of-concept#readme",
   "dependencies": {
+    "jsonfile": "^5.0.0",
     "readline-sync": "^1.4.9"
   }
 }
