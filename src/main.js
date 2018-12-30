@@ -70,7 +70,7 @@ while (!winner) {
   winner = findWinner([p1Name, p1], [p2Name, p2])
 }
 
-const results = jsonfile.readFileSync("results.json")
+var results = jsonfile.readFileSync("results.json")
 
 results.push({
   "game": game,
