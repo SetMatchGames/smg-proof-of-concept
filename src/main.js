@@ -1,8 +1,8 @@
-const fs = require('fs')
 const readlineSync = require('readline-sync')
+const jsonfile = require('jsonfile')
 
-const formats = JSON.parse(fs.readFileSync('formats.json', 'utf8'))
-const components = JSON.parse(fs.readFileSync('components.json', 'utf8'))
+const formats = jsonfile.readFileSync('formats.json')
+const components = jsonfile.readFileSync('components.json')
 
 const q = readlineSync.question
 
@@ -70,7 +70,8 @@ while (!winner) {
   winner = findWinner([p1Name, p1], [p2Name, p2])
 }
 
-var results = JSON.parse(fs.readFileSync('results.json', 'utf8'))
+var results = jsonfile.readFileSync("results.json")
+
 results.push({
   "game": game,
   "format": format,
@@ -78,7 +79,7 @@ results.push({
   "winner": winner
 })
 
-fs.writeFileSync("results.json", JSON.stringify(results))
+jsonfile.writeFileSync("results.json", results)
 
 const leaderboardMode = (results) => {
   let winners = {}
