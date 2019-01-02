@@ -82,19 +82,18 @@ const findDoubleWinner = ([p1Name, p1a, p1b], [p2Name, p2a, p2b]) => {
 
 const p1Name = q("Enter player one's name: ")
 const p2Name = q("Enter player two's name: ")
-let p1, p2
 let winner = false
 while (!winner) {
   console.log("No winner yet...")
   if (game === "Double Ro-sham-bo") {
-    p1a = getRules(q(`${p1Name} choose first component from [${gameComponents}]: `))
-    p1b = getRules(q(`${p1Name} choose second component from [${gameComponents}]: `))
-    p2a = getRules(q(`${p2Name} choose first component from [${gameComponents}]: `))
-    p2b = getRules(q(`${p2Name} choose second component from [${gameComponents}]: `))
+    p1a = getRules(q(`"${p1Name}" choose first component from [${gameComponents}]: `))
+    p1b = getRules(q(`"${p1Name}" choose second component from [${gameComponents}]: `))
+    p2a = getRules(q(`"${p2Name}" choose first component from [${gameComponents}]: `))
+    p2b = getRules(q(`"${p2Name}" choose second component from [${gameComponents}]: `))
     winner = findDoubleWinner([p1Name, p1a, p1b], [p2Name, p2a, p2b])
   } else {
-    p1 = getRules(q(`${p1Name} choose a component from [${gameComponents}]: `))
-    p2 = getRules(q(`${p2Name} choose a component from [${gameComponents}]: `))
+    p1 = getRules(q(`"${p1Name}" choose a component from [${gameComponents}]: `))
+    p2 = getRules(q(`"${p2Name}" choose a component from [${gameComponents}]: `))
     winner = findWinner([p1Name, p1], [p2Name, p2])
   }
 }
