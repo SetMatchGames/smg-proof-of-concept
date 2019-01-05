@@ -1,6 +1,4 @@
 {
-  "Ro-sham-bo": {
-    "standard": ["Rock", "Paper", "Scissors"],
-    "lizard-spock": ["Rock", "Paper", "Scissors", "Lizard", "Spock"]
-  }
+  "standard": ["Rock", "Paper", "Scissors"],
+  "lizard-spock": ["Rock", "Paper", "Scissors", "Lizard", "Spock"]
 }
