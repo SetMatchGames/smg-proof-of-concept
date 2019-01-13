@@ -4,6 +4,30 @@ const jsonfile = require('jsonfile')
 const formats = jsonfile.readFileSync('formats.json')
 const components = jsonfile.readFileSync('components.json')
 
+
+var tokenLedger = jsonfile.readFileSync('tokens.json')
+
+const findTopElements = (tokenLedger, elementType) => {
+  tokenCounts = {}
+  Object.keys(tokenLedger).forEach( u => {
+    tokenLedger[u][elementType].forEach( t => {
+      if (!(t in tokenCounts)) { tokenCounts[t] = 0 }
+      tokenCounts[t] += 1
+    })
+  })
+  console.log(`Top ${elementType}: `)
+  Object.keys(tokenCounts).forEach( t => {
+    console.log(`${t}: ${tokenCounts[t]}`)
+  })
+  return tokenCounts
+}
+
+// show top elements
+findTopElements(tokenLedger, "games")
+findTopElements(tokenLedger, "modes")
+findTopElements(tokenLedger, "formats")
+findTopElements(tokenLedger, "components")
+
 const q = readlineSync.question
 
 // choose game
@@ -59,14 +83,14 @@ const findDoubleWinner = ([p1Name, p1a, p1b], [p2Name, p2a, p2b]) => {
   let p1Score = 0
   let p2Score = 0
   if (round1 === p1Name) {
-    ++p1Score
+    p1Score += 1
   } else if ( round1 === p2Name ) {
-    ++p2Score
+    p2Score += 1
   }
   if (round2 === p1Name) {
-    ++p1Score
+    p1Score += 1
   } else if ( round2 === p2Name ) {
-    ++p2Score
+    p2Score += 1
   }
 
   // If one player won more, they win. If not, return false.
@@ -80,8 +104,62 @@ const findDoubleWinner = ([p1Name, p1a, p1b], [p2Name, p2a, p2b]) => {
 
 }
 
+// check that players own the correct tokens
+const checkTokenType = (tokenList, tokenType, playerLedger, playerName) => {
+  let allTokensOwned = true
+  tokenList.map( t => {
+    if (!playerLedger || !playerLedger[tokenType].includes(t)) {
+      console.log(`${playerName} must own at least one "${t}" token to play.`)
+      const boughtToken = buyToken(playerName, t, tokenType, tokenLedger)
+      if (boughtToken === true) { return }
+      allTokensOwned = false
+    }
+  })
+  return allTokensOwned
+}
+
+const checkTokens = (game, format, gameComponents, mode, playerName, tokenLedger) => {
+  let allTokensOwned = true
+  const playerLedger = tokenLedger[playerName]
+  let componentsCheck = checkTokenType(gameComponents, "components", playerLedger, playerName)
+  let formatCheck = checkTokenType([format], "formats", playerLedger, playerName)
+  let gameCheck = checkTokenType([game], "games", playerLedger, playerName)
+  let modeCheck = checkTokenType([mode], "modes", playerLedger, playerName)
+  if (componentsCheck === false || formatCheck === false || gameCheck === false || modeCheck === false) {
+    allTokensOwned = false
+  }
+  jsonfile.writeFileSync("tokens.json", tokenLedger)
+  if (allTokensOwned === false) {
+    console.log(`Game can't be played. ${playerName} must own [${gameComponents},${game},${mode},${format}].`)
+  }
+  return allTokensOwned
+}
+
+// let players buy tokens
+const buyToken = (playerName, elementName, elementType, tokenLedger) => {
+  const buyOrder = q(`Would ${playerName} like to buy 1 "${elementName}" token? [Y/N] `)
+  if (buyOrder === 'Y') {
+    if (!tokenLedger[playerName]) { tokenLedger[playerName] = {formats: [], components: [], modes: [], games: []} }
+    tokenLedger[playerName][elementType].push(elementName)
+    return true
+  } else if (buyOrder === 'N') {
+    console.log(`"${elementName}" token not bought.`)
+    return false
+  }
+  console.log('Invalid response.')
+  return false
+}
+
+// ask for player names
 const p1Name = q("Enter player one's name: ")
 const p2Name = q("Enter player two's name: ")
+
+// check that players own the required tokens
+const p1OwnsCorrectTokens = checkTokens(game, format, gameComponents, mode, p1Name, tokenLedger)
+if (p1OwnsCorrectTokens === false) { process.exit() }
+const p2OwnsCorrectTokens = checkTokens(game, format, gameComponents, mode, p2Name, tokenLedger)
+if (p2OwnsCorrectTokens === false) { process.exit() }
+
 let winner = false
 while (!winner) {
   console.log("No winner yet...")
