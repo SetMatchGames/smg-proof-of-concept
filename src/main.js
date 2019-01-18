@@ -9,14 +9,14 @@ const q = readlineSync.question
 
 const findTopElements = (tokenLedger, elementType) => {
   tokenCounts = {}
-  Object.keys(tokenLedger).forEach( u => {
-    tokenLedger[u][elementType].forEach( t => {
+  Object.keys(tokenLedger).forEach(u => {
+    tokenLedger[u][elementType].forEach(t => {
       if (!(t in tokenCounts)) { tokenCounts[t] = 0 }
       tokenCounts[t] += 1
     })
   })
   console.log(`Top ${elementType}: `)
-  Object.keys(tokenCounts).forEach( t => {
+  Object.keys(tokenCounts).forEach(t => {
     console.log(`${t}: ${tokenCounts[t]}`)
   })
   return tokenCounts
@@ -62,12 +62,12 @@ const findDoubleWinner = ([p1Name, p1a, p1b], [p2Name, p2a, p2b]) => {
   let p2Score = 0
   if (round1 === p1Name) {
     p1Score += 1
-  } else if ( round1 === p2Name ) {
+  } else if (round1 === p2Name) {
     p2Score += 1
   }
   if (round2 === p1Name) {
     p1Score += 1
-  } else if ( round2 === p2Name ) {
+  } else if (round2 === p2Name) {
     p2Score += 1
   }
 
@@ -91,20 +91,18 @@ const requiredTokens = (game, format, gameComponents, mode) => {
 
 // find all tokens a player is missing
 const createShoppingList = (playerName, requiredTokens, tokenLedger) => {
-  shoppingList = {formats: [], components: [], modes: [], games: []}
-  missingTokenCount = 0
+  shoppingList = {elements: {formats: [], components: [], modes: [], games: []}, length: 0}
   if (!tokenLedger[playerName]) {
     tokenLedger[playerName] = {formats: [], components: [], modes: [], games: []}
   }
-  for (eType in shoppingList) {
-    requiredTokens[eType].forEach( e => {
+  for (eType in shoppingList.elements) {
+    requiredTokens[eType].forEach(e => {
       if (!tokenLedger[playerName][eType].includes(e)) {
-        shoppingList[eType].push(e)
-        missingTokenCount += 1
+        shoppingList.elements[eType].push(e)
+        shoppingList.length += 1
       }
     })
   }
-  if (missingTokenCount === 0) { return 0 }
   return shoppingList
 }
 
@@ -124,13 +122,13 @@ const buyToken = (playerName, elementName, elementType, tokenLedger) => {
 // make sure a player owns required tokens before playing
 const tokenCheck = (playerName, tokenList, tokenLedger) => {
   const shoppingList = createShoppingList(playerName, tokenList, tokenLedger)
-  if ( shoppingList === 0 ) { return }
-  for (eType in shoppingList) {
-    shoppingList[eType].forEach( e => {
+  if (shoppingList.length === 0) { return }
+  for (eType in shoppingList.elements) {
+    shoppingList.elements[eType].forEach(e => {
       buyToken(playerName, e, eType, tokenLedger)
     })
   }
-  if (createShoppingList(playerName, tokenList, tokenLedger) === 0) {
+  if (createShoppingList(playerName, tokenList, tokenLedger).length === 0) {
     return true
   }
   console.log(`Game can't be played. ${playerName} must own [${gameComponents},${game},${mode},${format}].`)
@@ -140,7 +138,7 @@ const tokenCheck = (playerName, tokenList, tokenLedger) => {
 // mode functions
 const leaderboardMode = (results) => {
   let winners = {}
-  results.forEach((r) => {
+  results.forEach(r => {
     if (winners[r.winner] === undefined) {
       winners[r.winner] = 1
     } else {
