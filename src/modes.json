@@ -1,0 +1,8 @@
+{
+  "leaderboard": {
+    "cmd": "node leaderboard.js"
+  },
+  "inviteOnly": {
+    "cmd": "node inviteOnly.js"
+  }
+}

@@ -4,6 +4,7 @@ const jsonfile = require('jsonfile')
 const formats = jsonfile.readFileSync('formats.json')
 const components = jsonfile.readFileSync('components.json')
 var tokenLedger = jsonfile.readFileSync('tokens.json')
+const modes = jsonfile.readFileSync('modes.json')
 
 const q = readlineSync.question
 
@@ -135,31 +136,6 @@ const tokenCheck = (playerName, tokenList, tokenLedger) => {
   return false
 }
 
-// mode functions
-const leaderboardMode = (results) => {
-  let winners = {}
-  results.forEach(r => {
-    if (winners[r.winner] === undefined) {
-      winners[r.winner] = 1
-    } else {
-      winners[r.winner] += 1
-    }
-  })
-  console.log(winners)
-}
-
-const jesseMillerOnlyMode = (results) => {
-  results = results.filter(
-    r => r.players.includes("Jesse") && r.players.includes("Miller") && r.players.length === 2
-  )
-  leaderboardMode(results)
-}
-
-const modes = {
-  "leaderboard": leaderboardMode,
-  "jesseMillerOnly": jesseMillerOnlyMode
-}
-
 // PLAY GAME
 
 // show top elements
@@ -177,7 +153,7 @@ let format = q(`Choose a format [${Object.keys(formats)}]: `)
 if (format === "") { format = "standard" }
 
 // choose mode
-let mode = q("Choose a mode [leaderboard, jesseMillerOnly]: ")
+let mode = q(`Choose a mode [${Object.keys(modes)}]: `)
 if (mode === "") { mode = "leaderboard" }
 
 const gameComponents = formats[format]
@@ -222,4 +198,8 @@ results.push({
 
 jsonfile.writeFileSync("results.json", results)
 
-modes[mode](results.filter(r => r.game === game && r.format === format))
+const modeConf = modes[mode]
+require('child_process').execSync(modeConf.cmd, {"stdio": "inherit"})
+
+
+// modes[mode](results.filter(r => r.game === game && r.format === format))
